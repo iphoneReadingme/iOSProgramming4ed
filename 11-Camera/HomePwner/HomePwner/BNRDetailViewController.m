@@ -19,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
+@property (nonatomic, retain) UIButton    *photonImageBtn;
 
 - (IBAction)takePicture:(id)sender;
 - (IBAction)backgroundTapped:(id)sender;
@@ -58,7 +59,9 @@
     } else {
         // Clear the imageView
         self.imageView.image = nil;
-    }
+	}
+	
+	[self addPhotoButton];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -133,6 +136,38 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     [textField resignFirstResponder];
     return YES;
+}
+
+#pragma mark - == 取相册图片按钮
+- (void)addPhotoButton
+{
+	self.photonImageBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+	[_photonImageBtn setTitle:@"相册" forState:UIControlStateNormal];
+	[_photonImageBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+	[_photonImageBtn setTitleColor:[UIColor blueColor] forState:UIControlStateHighlighted];
+	[_photonImageBtn addTarget:self action:@selector(takePhotoImage:) forControlEvents:UIControlEventTouchUpInside];
+	CGRect rect = CGRectMake(200, 0, 64, 40);
+	[_photonImageBtn setFrame:rect];
+	[_toolbar addSubview:_photonImageBtn];
+}
+
+- (void)takePhotoImage:(id)sender
+{
+	UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+	
+	// If the device ahs a camera, take a picture, otherwise,
+	// just pick from the photo library
+	//	if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+	//		imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+	//	} else
+	{
+		imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+	}
+	
+	imagePicker.delegate = self;
+	
+	// Place image picker on the screen
+	[self presentViewController:imagePicker animated:YES completion:NULL];
 }
 
 @end
