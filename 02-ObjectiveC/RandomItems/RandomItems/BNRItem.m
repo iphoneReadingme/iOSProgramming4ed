@@ -35,8 +35,8 @@
     int randomValue = arc4random() % 100;
 
     NSString *randomSerialNumber = [NSString stringWithFormat:@"%c%c%c%c%c",
-                                    '0' + arc4random() % 10,
-                                    'A' + arc4random() % 26,
+                                    '0' + arc4random() % 10,    ///< 数字
+                                    'A' + arc4random() % 26,    ///< 26个字母
                                     '0' + arc4random() % 10,
                                     'A' + arc4random() % 26,
                                     '0' + arc4random() % 10];
@@ -78,6 +78,7 @@
 
 - (instancetype)init
 {
+	///< 类似将基类的方法重定向，或者是屏蔽某个公开接口
     return [self initWithItemName:@"Item"];
 }
 
