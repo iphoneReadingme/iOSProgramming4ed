@@ -13,15 +13,32 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+	///< UIWindow 对象就像是一个容器，负责包含应用程序中的所有视图。在程序启动时创建并设置UIWindow,然后为其添加子视图
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
 
     CGRect firstFrame = self.window.bounds;
 
+	firstFrame = CGRectMake(200, 440, 100, 150);
     BNRHypnosisView *firstView = [[BNRHypnosisView alloc] initWithFrame:firstFrame];
-
-    [self.window addSubview:firstView];
-
+	firstView.bDraw = NO;
+	firstView.backgroundColor = [UIColor redColor];
+    //[self.window addSubview:firstView];
+	
+	firstFrame = CGRectMake(20, 30, 50, 50);
+	BNRHypnosisView *secondView = [[BNRHypnosisView alloc] initWithFrame:firstFrame];
+	secondView.bDraw = NO;
+	secondView.backgroundColor = [UIColor blueColor];
+	[firstView addSubview:secondView];
+	
+	firstFrame = CGRectMake(20, 30, 50, 50);
+	firstFrame = self.window.bounds;
+	BNRHypnosisView *thirdView = [[BNRHypnosisView alloc] initWithFrame:firstFrame];
+	thirdView.bDraw = YES;
+	thirdView.backgroundColor = [UIColor blueColor];
+	[self.window addSubview:thirdView];
+	[self.window addSubview:firstView];
+	
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     return YES;

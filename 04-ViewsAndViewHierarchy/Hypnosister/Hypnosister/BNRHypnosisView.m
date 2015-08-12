@@ -24,6 +24,10 @@
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect
 {
+	if (!_bDraw)
+	{
+		return;
+	}
     CGRect bounds = self.bounds;
 
     // Figure out the center of the bounds rectangle
@@ -32,7 +36,8 @@
     center.y = bounds.origin.y + bounds.size.height / 2.0;
 
     // The largest circle will circumstribe the view
-    float maxRadius = hypot(bounds.size.width, bounds.size.height) / 2.0;
+	//float maxRadius = hypot(bounds.size.width, bounds.size.height) / 2.0;
+	float maxRadius = MIN(bounds.size.width, bounds.size.height) / 2.0;
 
     UIBezierPath *path = [[UIBezierPath alloc] init];
 
