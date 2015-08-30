@@ -29,7 +29,7 @@
 
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
+- (void)drawRect0:(CGRect)rect
 {
     CGRect bounds = self.bounds;
 
