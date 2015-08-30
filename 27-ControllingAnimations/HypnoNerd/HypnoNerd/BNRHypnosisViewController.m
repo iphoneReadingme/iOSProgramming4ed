@@ -11,6 +11,7 @@
 
 @interface BNRHypnosisViewController () <UITextFieldDelegate>
 @property (nonatomic, weak) UITextField *textField;
+@property (nonatomic, retain) UILabel *txtLabel;
 @end
 
 @implementation BNRHypnosisViewController
@@ -53,6 +54,7 @@
 
     // Set it as *the* view of this view controller
     self.view = backgroundView;
+	
 }
 
 - (void)viewDidLoad
@@ -60,22 +62,31 @@
     // Always call the super implementation of viewDidLoad
     [super viewDidLoad];
 
-    NSLog(@"BNRHypnosisViewController loaded its view");
+	NSLog(@"BNRHypnosisViewController loaded its view");
+	
+	CGRect rect = CGRectMake(200, 0, 100, 30);
+	UILabel* pLabel = [[UILabel alloc] initWithFrame:rect];
+	pLabel.text = @"关键动画帧demo2015-08-15";
+	_txtLabel = pLabel;
+	
+	[self.view addSubview:pLabel];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [UIView animateWithDuration:2.0
-                          delay:0.0
-         usingSpringWithDamping:0.25
-          initialSpringVelocity:0.0
-                        options:0
-                     animations:^{
-                         CGRect frame = CGRectMake(40, 70, 240, 30);
-                         self.textField.frame = frame;
-                     }
-                     completion:NULL];
+//    [UIView animateWithDuration:2.0
+//                          delay:0.0
+//         usingSpringWithDamping:0.25
+//          initialSpringVelocity:0.0
+//                        options:0
+//                     animations:^{
+//                         CGRect frame = CGRectMake(40, 70, 240, 30);
+//                         self.textField.frame = frame;
+//                     }
+//                     completion:NULL];
+	
+	[self executeAnimation];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -156,6 +167,59 @@
         motionEffect.maximumRelativeValue = @25;
         [messageLabel addMotionEffect:motionEffect];
     }
+}
+
+- (void)executeAnimation
+{
+	// Animate the alpha to 1.0
+	CGRect rect = [_textField frame];
+	rect.origin.y = 0;
+	[_textField setFrame:rect];
+	
+	CGFloat t1 = 0.25f;
+	CGFloat t2 = 0.25f;
+	CGFloat t3 = 0.25f;
+	CGFloat t4 = 0.25f;
+	CGFloat t = 3.0f;
+	
+	[UIView animateKeyframesWithDuration:t delay:0.0 options:UIViewKeyframeAnimationOptionCalculationModeCubic animations:^{
+		
+		[UIView addKeyframeWithRelativeStartTime:0 relativeDuration:t1 animations:^{
+			
+			CGRect rect = [_textField frame];
+			rect.origin.y = 300;
+			[_textField setFrame:rect];
+			
+			rect.origin.x = 200;
+			rect.origin.y = 400;
+			[_txtLabel setFrame:rect];
+		}];
+		
+		[UIView addKeyframeWithRelativeStartTime:t1 relativeDuration:t2 animations:^{
+			_textField.backgroundColor = [UIColor blueColor];
+			_txtLabel.textColor = [UIColor redColor];
+			_txtLabel.backgroundColor = [UIColor grayColor];
+		}];
+		[UIView addKeyframeWithRelativeStartTime:t1 + t2 relativeDuration:t3 animations:^{
+			int x = arc4random() % 200;
+			int y = arc4random() % 200;
+			_textField.center = CGPointMake(x, y);
+			
+			CGRect rect = [_txtLabel frame];
+			rect.origin.x = 200;
+			rect.origin.y = 0;
+			[_txtLabel setFrame:rect];
+		}];
+		
+		[UIView addKeyframeWithRelativeStartTime:t1 + t2 + t3 relativeDuration:t4 animations:^{
+			
+			_textField.backgroundColor = [UIColor clearColor];
+			_txtLabel.backgroundColor = [UIColor blueColor];
+		}];
+		
+	} completion:^(BOOL finished) {
+		NSLog(@"Animation finished");
+	}];
 }
 
 @end
